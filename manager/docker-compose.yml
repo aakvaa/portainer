@@ -1,0 +1,32 @@
+name: portainer
+
+services:
+  portainer-ce:
+    image: portainer/portainer-ee:lts
+    container_name: portainer
+    ports:
+      - 8000:8000
+      - 9443:9443
+    restart: always
+    command: >
+      -H unix:///var/run/docker.sock
+      --sslcert /certs/portainer.crt
+      --sslkey  /certs/portainer.key
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+      - ./certs:/certs
+
+  nginx:
+    image: nginx:latest
+    container_name: portainer-nginx
+    ports:
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - portainer-ce
+
+volumes:
+  portainer_data:
