@@ -1,8 +1,12 @@
-## Subindo o Portainer e Portainer Agent com ssl para Docker e Socker Swarm
+# 🚀 Deploy do Portainer com SSL no Docker e Docker Swarm
 
-# Criando a chave ssl auto-assinada e fazendo funcionar
+Este guia mostra como subir o **Portainer** e o **Portainer Agent** utilizando **SSL com certificados autoassinados**, para garantir conexões seguras, seja em Docker standalone ou em ambiente Docker Swarm.
 
-Crie o **seu** certificado com open ssl utilizando o arquivo ´cert.conf´ dentro da pasta certs com o seguindo comando:
+---
+
+## 🔐 Gerando Certificado SSL Autoassinado
+
+1. Crie um certificado usando `OpenSSL` com base no arquivo `cert.conf`, localizado na pasta `certs`:
 
 ```
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
@@ -10,31 +14,52 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -out portainer.crt \
   -config cert.conf \
   -extensions req_ext
-
 ```
-**OBS.: os certificados presentes no repositório são meramente ilustrativos.**
 
-Comando para verificar o SAN do certificado:
+⚠️ **Atenção:** os certificados presentes no repositório são **apenas ilustrativos**.
+
+2. Para verificar o conteúdo do SAN (Subject Alternative Name) do certificado:
 
 ```
 openssl x509 -in portainer.crt -text -noout | grep -A10 "Subject Alternative Name"
 ```
 
-pega o .crt e joga pra pasta certs do agent e renomeia para "ca-certificates.crt" mapeando o volume no yml do agent:
+---
 
-```
-- ./certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
-```
+## 📦 Preparando Ambiente
 
-# Subindo o portainer
-É necessário criar o volume.
+1. Crie o volume do Portainer:
 
 ```
 docker volume create portainer_data
 ```
 
-# Gato do pulo pra portainer com ssl
+2. Renomeie o arquivo `.crt` para `ca-certificates.crt` e coloque na pasta `certs` do agent.
 
-Após subir o nginx para redirecionamento do túnel configure o túnel para conexão do nginx;
+3. No `docker-compose.yml` do agent, monte o volume assim:
 
-![Túnel WebSocket Estabilizado com ssl](docs/images/tunel-ok.png)
+```
+- ./certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+```
+
+---
+
+## 🌐 Subindo o Portainer com SSL
+
+Configure o `nginx` para fazer o redirecionamento do túnel seguro. Após isso, no Portainer, defina a conexão do agente com o túnel HTTPS via WebSocket.
+
+📸 Exemplo de túnel estabilizado:
+
+![Túnel WebSocket Estabilizado com SSL](docs/images/tunel-ok.png)
+
+---
+
+## ✅ Resultado Esperado
+
+- Comunicação segura entre Portainer e Agent.
+- Certificado válido localmente com SAN configurado.
+- Setup compatível com Docker e Docker Swarm.
+
+---
+
+Feito isso, é só acessar o Portainer com o navegador apontando pro domínio com HTTPS.
