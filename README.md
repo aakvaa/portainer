@@ -55,7 +55,7 @@ Configure o `nginx` para fazer o redirecionamento do túnel seguro. Após isso, 
 
 📸 Exemplo de túnel estabilizado:
 
-![Túnel WebSocket Estabilizado com SSL](docs/images/tunel-ok.png)
+![Túnel WebSocket Estabilizado com SSL](docs/images/tunelexample.png)
 
 ---
 
