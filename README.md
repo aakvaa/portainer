@@ -1,5 +1,10 @@
 # 🚀 Deploy do Portainer com SSL no Docker e Docker Swarm
 
+![Portainer](https://img.shields.io/badge/Portainer-2.19-blue?logo=portainer&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-20.10-blue?logo=docker&logoColor=white)
+![Docker Swarm](https://img.shields.io/badge/Docker--Swarm-enabled-green?logo=docker)
+![Nginx](https://img.shields.io/badge/Nginx-reverse--proxy-brightgreen?logo=nginx&logoColor=white)
+
 Este guia mostra como subir o **Portainer** e o **Portainer Agent** utilizando **SSL com certificados autoassinados**, para garantir conexões seguras, seja em Docker standalone ou em ambiente Docker Swarm.
 
 ---
